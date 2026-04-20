@@ -3,7 +3,9 @@ package basisu_odin
 Quality_Min :: 0
 Quality_Max :: 1000
 
-LIB_PATH :: "encoder_lib.lib"
+when ODIN_OS == .Windows {
+	LIB_PATH :: "build/Debug/basisu_c.lib"
+}
 
 @(export)
 foreign import lib {LIB_PATH}
