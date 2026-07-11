@@ -8,10 +8,14 @@ Currently tracked version is version 2.1.0
 The build scripts clone the pinned Basis Universal source revision when it is missing, then write the native archive to the canonical platform directory.
 
 ```bash
-# Windows
+# Windows shared
 ./build.bat
-# Linux/Darwin
+# Windows static
+./build_static.bat
+# Linux/Darwin shared
 ./build.sh
+# Linux/Darwin static
+./build_static.sh
 ```
 
 ## NOTE

@@ -4,7 +4,7 @@ set -euo pipefail
 
 BASE="$(cd "$(dirname "$0")" && pwd)"
 SOURCE_DIR="$BASE/basis_universal"
-BUILD_DIR="$BASE/build"
+BUILD_DIR="$BASE/build_shared"
 
 clone_at_revision() {
     local dir="$1"
@@ -41,14 +41,14 @@ case "$(uname -s)" in
     Darwin)
         CPU=$(sysctl -n hw.ncpu)
         OUTPUT_DIR="$BASE/$(darwin_arch_dir)"
-        LIB_C_NAME=basisu_c.darwin.a
-        LIB_ENCODER_NAME=basisu_encoder.darwin.a
+        LIB_NAME=basisu_c.dylib
+        SOURCE_LIB="$BUILD_DIR/libbasisu_c.dylib"
         ;;
     Linux)
         CPU=$(nproc)
         OUTPUT_DIR="$BASE/$(linux_arch_dir)"
-        LIB_C_NAME=basisu_c.linux.a
-        LIB_ENCODER_NAME=basisu_encoder.linux.a
+        LIB_NAME=basisu_c.so
+        SOURCE_LIB="$BUILD_DIR/libbasisu_c.so"
         ;;
     *)
         echo "Unsupported host OS: $(uname -s)" >&2
@@ -56,14 +56,13 @@ case "$(uname -s)" in
         ;;
 esac
 
-echo "Configuring build..."
-cmake -S "$BASE" -B "$BUILD_DIR" -DCMAKE_BUILD_TYPE=Release
+echo "Configuring shared build..."
+cmake -S "$BASE" -B "$BUILD_DIR" -DCMAKE_BUILD_TYPE=Release -DBASISU_BUILD_SHARED=ON
 
-echo "Building project..."
+echo "Building shared project..."
 cmake --build "$BUILD_DIR" --target basisu_c --config Release -j"$CPU"
 
 mkdir -p "$OUTPUT_DIR"
-cp "$BUILD_DIR/libbasisu_c.a" "$OUTPUT_DIR/$LIB_C_NAME"
-cp "$BUILD_DIR/basis_universal/libbasisu_encoder.a" "$OUTPUT_DIR/$LIB_ENCODER_NAME"
+cp "$SOURCE_LIB" "$OUTPUT_DIR/$LIB_NAME"
 
-echo "Build completed successfully!"
+echo "Shared build completed successfully!"

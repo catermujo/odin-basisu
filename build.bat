@@ -10,7 +10,7 @@ if /I "%VENDOR_WINDOWS_ARCH%"=="X86" set "VENDOR_WINDOWS_ARCH=x64"
 
 set "BASE=%~dp0"
 set "SOURCE_DIR=%BASE%basis_universal"
-set "BUILD_DIR=%BASE%build_%VENDOR_WINDOWS_ARCH%"
+set "BUILD_DIR=%BASE%build_shared_%VENDOR_WINDOWS_ARCH%"
 set "OUTPUT_DIR=%BASE%windows_%VENDOR_WINDOWS_ARCH%"
 
 if not exist "%SOURCE_DIR%" (
@@ -19,14 +19,14 @@ if not exist "%SOURCE_DIR%" (
 
 if not exist "%OUTPUT_DIR%" mkdir "%OUTPUT_DIR%"
 
-echo Configuring build...
-cmake -A %VENDOR_WINDOWS_ARCH% -S "%BASE%" -B "%BUILD_DIR%" -DCMAKE_BUILD_TYPE=Release || exit /b 1
+echo Configuring shared build...
+cmake -A %VENDOR_WINDOWS_ARCH% -S "%BASE%" -B "%BUILD_DIR%" -DCMAKE_BUILD_TYPE=Release -DBASISU_BUILD_SHARED=ON || exit /b 1
 
-echo Building project...
+echo Building shared project...
 cmake --build "%BUILD_DIR%" --target basisu_c --config Release || exit /b 1
 
-copy /y "%BUILD_DIR%\Release\basisu_c.lib" "%OUTPUT_DIR%\basisu_c.lib" >nul || exit /b 1
-copy /y "%BUILD_DIR%\basis_universal\Release\basisu_encoder.lib" "%OUTPUT_DIR%\basisu_encoder.lib" >nul || exit /b 1
+copy /y "%BUILD_DIR%\Release\basisu_c.lib" "%OUTPUT_DIR%\basisu_c_shared.lib" >nul || exit /b 1
+copy /y "%BUILD_DIR%\Release\basisu_c.dll" "%OUTPUT_DIR%\basisu_c.dll" >nul || exit /b 1
 
-echo Build completed successfully!
+echo Shared build completed successfully!
 exit /b 0
