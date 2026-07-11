@@ -14,15 +14,17 @@ when ODIN_OS == .Linux {
 when ODIN_OS == .Windows {
     when ODIN_ARCH == .amd64 {
         when LINK == "static" {
-            foreign import lib {"windows_x64/basisu_c.lib", "windows_x64/basisu_encoder.lib"}
+            LIB_PATH :: "windows_x64/basisu_c.lib"
+            ENCODER_LIB_PATH :: "windows_x64/basisu_encoder.lib"
         } else {
-            foreign import lib "windows_x64/basisu_c_shared.lib"
+            LIB_PATH :: "windows_x64/basisu_c_shared.lib"
         }
     } else when ODIN_ARCH == .arm64 {
         when LINK == "static" {
-            foreign import lib {"windows_arm64/basisu_c.lib", "windows_arm64/basisu_encoder.lib"}
+            LIB_PATH :: "windows_arm64/basisu_c.lib"
+            ENCODER_LIB_PATH :: "windows_arm64/basisu_encoder.lib"
         } else {
-            foreign import lib "windows_arm64/basisu_c_shared.lib"
+            LIB_PATH :: "windows_arm64/basisu_c_shared.lib"
         }
     } else {
         #panic("vendor/basisu supports Windows amd64/arm64 only")
@@ -30,15 +32,17 @@ when ODIN_OS == .Windows {
 } else when ODIN_OS == .Darwin {
     when ODIN_ARCH == .amd64 {
         when LINK == "static" {
-            foreign import lib {"darwin_x64/basisu_c.darwin.a", "darwin_x64/basisu_encoder.darwin.a"}
+            LIB_PATH :: "darwin_x64/basisu_c.darwin.a"
+            ENCODER_LIB_PATH :: "darwin_x64/basisu_encoder.darwin.a"
         } else {
-            foreign import lib "darwin_x64/basisu_c.dylib"
+            LIB_PATH :: "darwin_x64/basisu_c.dylib"
         }
     } else when ODIN_ARCH == .arm64 {
         when LINK == "static" {
-            foreign import lib {"darwin_arm64/basisu_c.darwin.a", "darwin_arm64/basisu_encoder.darwin.a"}
+            LIB_PATH :: "darwin_arm64/basisu_c.darwin.a"
+            ENCODER_LIB_PATH :: "darwin_arm64/basisu_encoder.darwin.a"
         } else {
-            foreign import lib "darwin_arm64/basisu_c.dylib"
+            LIB_PATH :: "darwin_arm64/basisu_c.dylib"
         }
     } else {
         #panic("vendor/basisu supports Darwin amd64/arm64 only")
@@ -46,21 +50,30 @@ when ODIN_OS == .Windows {
 } else when ODIN_OS == .Linux {
     when ODIN_ARCH == .amd64 {
         when LINK == "static" {
-            foreign import lib {"linux_x64/basisu_c.linux.a", "linux_x64/basisu_encoder.linux.a"}
+            LIB_PATH :: "linux_x64/basisu_c.linux.a"
+            ENCODER_LIB_PATH :: "linux_x64/basisu_encoder.linux.a"
         } else {
-            foreign import lib "linux_x64/basisu_c.so"
+            LIB_PATH :: "linux_x64/basisu_c.so"
         }
     } else when ODIN_ARCH == .arm64 {
         when LINK == "static" {
-            foreign import lib {"linux_arm64/basisu_c.linux.a", "linux_arm64/basisu_encoder.linux.a"}
+            LIB_PATH :: "linux_arm64/basisu_c.linux.a"
+            ENCODER_LIB_PATH :: "linux_arm64/basisu_encoder.linux.a"
         } else {
-            foreign import lib "linux_arm64/basisu_c.so"
+            LIB_PATH :: "linux_arm64/basisu_c.so"
         }
     } else {
         #panic("vendor/basisu supports Linux amd64/arm64 only")
     }
 } else {
     #panic("vendor/basisu supports Windows, Darwin, and Linux only")
+}
+
+@(export)
+foreign import lib {LIB_PATH}
+
+when LINK == "static" {
+    @(require) foreign import basisu_encoder {ENCODER_LIB_PATH}
 }
 
 Basis_Format :: enum u32 {
