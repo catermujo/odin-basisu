@@ -41,13 +41,13 @@ case "$(uname -s)" in
     Darwin)
         CPU=$(sysctl -n hw.ncpu)
         OUTPUT_DIR="$BASE/$(darwin_arch_dir)"
-        LIB_NAME=basisu_c.dylib
+        LIB_NAME=libbasisu_c.dylib
         SOURCE_LIB="$BUILD_DIR/libbasisu_c.dylib"
         ;;
     Linux)
         CPU=$(nproc)
         OUTPUT_DIR="$BASE/$(linux_arch_dir)"
-        LIB_NAME=basisu_c.so
+        LIB_NAME=libbasisu_c.so
         SOURCE_LIB="$BUILD_DIR/libbasisu_c.so"
         ;;
     *)

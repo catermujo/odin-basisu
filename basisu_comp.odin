@@ -35,14 +35,14 @@ when ODIN_OS == .Windows {
             LIB_PATH :: "darwin_x64/basisu_c.darwin.a"
             ENCODER_LIB_PATH :: "darwin_x64/basisu_encoder.darwin.a"
         } else {
-            LIB_PATH :: "darwin_x64/basisu_c.dylib"
+            LIB_PATH :: "darwin_x64/libbasisu_c.dylib"
         }
     } else when ODIN_ARCH == .arm64 {
         when LINK == "static" {
             LIB_PATH :: "darwin_arm64/basisu_c.darwin.a"
             ENCODER_LIB_PATH :: "darwin_arm64/basisu_encoder.darwin.a"
         } else {
-            LIB_PATH :: "darwin_arm64/basisu_c.dylib"
+            LIB_PATH :: "darwin_arm64/libbasisu_c.dylib"
         }
     } else {
         #panic("vendor/basisu supports Darwin amd64/arm64 only")
@@ -53,14 +53,14 @@ when ODIN_OS == .Windows {
             LIB_PATH :: "linux_x64/basisu_c.linux.a"
             ENCODER_LIB_PATH :: "linux_x64/basisu_encoder.linux.a"
         } else {
-            LIB_PATH :: "linux_x64/basisu_c.so"
+            LIB_PATH :: "linux_x64/libbasisu_c.so"
         }
     } else when ODIN_ARCH == .arm64 {
         when LINK == "static" {
             LIB_PATH :: "linux_arm64/basisu_c.linux.a"
             ENCODER_LIB_PATH :: "linux_arm64/basisu_encoder.linux.a"
         } else {
-            LIB_PATH :: "linux_arm64/basisu_c.so"
+            LIB_PATH :: "linux_arm64/libbasisu_c.so"
         }
     } else {
         #panic("vendor/basisu supports Linux amd64/arm64 only")
