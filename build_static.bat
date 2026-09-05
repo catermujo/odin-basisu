@@ -20,7 +20,7 @@ if not exist "%SOURCE_DIR%" (
 if not exist "%OUTPUT_DIR%" mkdir "%OUTPUT_DIR%"
 
 echo Configuring build...
-cmake -A %VENDOR_WINDOWS_ARCH% -S "%BASE%" -B "%BUILD_DIR%" -DCMAKE_BUILD_TYPE=Release -DBASISU_BUILD_SHARED=OFF || exit /b 1
+cmake -A %VENDOR_WINDOWS_ARCH% -S "%BASE%." -B "%BUILD_DIR%" -DCMAKE_BUILD_TYPE=Release -DBASISU_BUILD_SHARED=OFF || exit /b 1
 
 echo Building project...
 cmake --build "%BUILD_DIR%" --target basisu_c --config Release || exit /b 1
